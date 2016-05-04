@@ -37,15 +37,20 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         ButterKnife.bind(this);
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
         mCreateUserButton.setOnClickListener(this);
+        mLoginTextView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         if (view == mCreateUserButton) {
             createNewUser();
+            Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
-        Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
-        startActivity(intent);
+        if (view == mLoginTextView) {
+            Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void createNewUser() {
