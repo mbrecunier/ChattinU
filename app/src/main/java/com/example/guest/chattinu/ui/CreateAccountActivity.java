@@ -1,5 +1,6 @@
 package com.example.guest.chattinu.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         if (view == mCreateUserButton) {
             createNewUser();
         }
+        Intent intent = new Intent(CreateAccountActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     public void createNewUser() {
