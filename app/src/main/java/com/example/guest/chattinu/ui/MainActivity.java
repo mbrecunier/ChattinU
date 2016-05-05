@@ -59,19 +59,21 @@ public class MainActivity extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.new_chat_dialog, null);
         dialogBuilder.setView(dialogView);
 
+
+
 //        final EditText mSenderEditText = (EditText) dialogView.findViewById();
 
         dialogBuilder.setTitle("Start a new chat!");
-//        dialogBuilder.setPositiveButton("Send", new DialogInterface.onClickListener() {
-//           public void onClick(DialogInterface dialog, int whichButton) {
-//
-//           }
-//        });
-//        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.onClickListener() {
-//            public void onClick(DialogInterface dialog, int whichButton) {
-//
-//            }
-//        });
+        dialogBuilder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+
+           }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
