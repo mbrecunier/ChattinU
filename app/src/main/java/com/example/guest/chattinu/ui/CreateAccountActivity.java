@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.guest.chattinu.Constants;
 import com.example.guest.chattinu.R;
-import com.example.guest.chattinu.models.models.User;
+import com.example.guest.chattinu.models.User;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
