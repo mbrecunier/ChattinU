@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private Firebase mFirebaseRef;
     private Firebase mFirebaseChatsRef;
     private Firebase mFirebaseUserRef;
@@ -91,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User user = snapshot.getValue(User.class);
                     users.add(user);
-                    setUserNames(users);
                 }
+                setUserNames(users);
             }
 
             @Override
@@ -124,8 +125,10 @@ public class MainActivity extends AppCompatActivity {
     private void setUserNames(List<User> users) {
         for (User user : users) {
             userNames.add(user.getName());
+            Log.d(TAG, "HOW BIG? HERE Y'ARE... " + users.size());
+            Log.d(TAG, user.getName());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item, userNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item, userNames);
         mRecipientSpinner.setAdapter(adapter);
     }
 
