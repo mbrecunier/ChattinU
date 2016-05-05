@@ -22,8 +22,8 @@ import com.example.guest.chattinu.models.Chat;
 import com.firebase.client.Firebase;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String TAG = MainActivity.class.getSimpleName();
     private Firebase mFirebaseRef;
+    private Firebase mFirebaseChatsRef;
     private SharedPreferences mSharedPreferences;
     private String mUserId;
 
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
+        mFirebaseChatsRef = new Firebase(Constants.FIREBASE_URL_CHATS);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mUserId = mSharedPreferences.getString(Constants.KEY_UID, null);
     }
@@ -79,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
                String recipient = mRecipientSpinner.getSelectedItem().toString();
                String content = mContentEditText.getText().toString();
                Chat chat = new Chat(sender, recipient, content);
-               //save chat to firebase
-               //move to that ChatActivity
+
+               saveChatToFirebase(chat);
            }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -90,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
+    }
+
+    private void saveChatToFirebase(Chat chat) {
+        mFirebaseChatsRef.push().setValue(chat);
     }
 
     protected void logout() {
