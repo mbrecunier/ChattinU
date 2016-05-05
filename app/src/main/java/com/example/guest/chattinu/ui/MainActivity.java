@@ -2,9 +2,12 @@ package com.example.guest.chattinu.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,15 +22,20 @@ import com.example.guest.chattinu.models.Chat;
 import com.firebase.client.Firebase;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG = MainActivity.class.getSimpleName();
     private Firebase mFirebaseRef;
-    private Spinner recipientSpinner;
+    private SharedPreferences mSharedPreferences;
+    private String mUserId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
-
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mUserId = mSharedPreferences.getString(Constants.KEY_UID, null);
     }
 
     @Override
@@ -61,12 +69,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//        final EditText mSenderEditText = (EditText) dialogView.findViewById();
+        final EditText mContentEditText = (EditText) dialogView.findViewById(R.id.contentEditText);
+        final Spinner mRecipientSpinner = (Spinner) dialogView.findViewById(R.id.recipient_spinner);
 
         dialogBuilder.setTitle("Start a new chat!");
         dialogBuilder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int whichButton) {
-
+               String sender = mUserId;
+               String recipient = mRecipientSpinner.getSelectedItem().toString();
+               String content = mContentEditText.getText().toString();
+               Chat chat = new Chat(sender, recipient, content);
+               //save chat to firebase
+               //move to that ChatActivity
            }
         });
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -77,14 +91,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog b = dialogBuilder.create();
         b.show();
     }
-
-
-
-//    public void addNewChat(sender, recipient, content ) {
-//
-//        Chat chat = new Chat(sender, recipient, content);
-//
-//    }
 
     protected void logout() {
         mFirebaseRef.unauth();
