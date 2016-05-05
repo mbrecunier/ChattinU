@@ -13,20 +13,33 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
+import com.example.guest.chattinu.Adapters.RecipientSpinnerAdapter;
 import com.example.guest.chattinu.Constants;
 import com.example.guest.chattinu.R;
 import com.example.guest.chattinu.models.Chat;
+import com.example.guest.chattinu.models.User;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Firebase mFirebaseRef;
     private Firebase mFirebaseChatsRef;
+    private Firebase mFirebaseUserRef;
     private SharedPreferences mSharedPreferences;
     private String mUserId;
-
+    List<String> userNames = new ArrayList<>();
+    ArrayList<User> users = new ArrayList<>();
+    private Spinner mRecipientSpinner;
 
 
     @Override
@@ -34,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
+        mFirebaseUserRef = new Firebase(Constants.FIREBASE_URL_USERS);
         mFirebaseChatsRef = new Firebase(Constants.FIREBASE_URL_CHATS);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mUserId = mSharedPreferences.getString(Constants.KEY_UID, null);
@@ -68,10 +82,24 @@ public class MainActivity extends AppCompatActivity {
         final View dialogView = inflater.inflate(R.layout.new_chat_dialog, null);
         dialogBuilder.setView(dialogView);
 
-
-
         final EditText mContentEditText = (EditText) dialogView.findViewById(R.id.contentEditText);
-        final Spinner mRecipientSpinner = (Spinner) dialogView.findViewById(R.id.recipient_spinner);
+        mRecipientSpinner = (Spinner) dialogView.findViewById(R.id.recipient_spinner);
+
+        mFirebaseUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    users.add(user);
+                    setUserNames(users);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
         dialogBuilder.setTitle("Start a new chat!");
         dialogBuilder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
@@ -91,6 +119,14 @@ public class MainActivity extends AppCompatActivity {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
+    }
+
+    private void setUserNames(List<User> users) {
+        for (User user : users) {
+            userNames.add(user.getName());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.support_simple_spinner_dropdown_item, userNames);
+        mRecipientSpinner.setAdapter(adapter);
     }
 
     private void saveChatToFirebase(Chat chat) {
