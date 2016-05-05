@@ -8,21 +8,21 @@ import java.util.Date;
 /**
  * Created by Guest on 5/5/16.
  */
-public class Message {
+public class Chat {
     private String sender;
     private String recipient;
     private String content;
     private Date timestamp;
     private String pushId;
 
-    public Message (String sender, String recipient, String content) {
+    public Chat(String sender, String recipient, String content) {
         this.sender = sender;
         this.recipient = recipient;
         this.content = content;
         this.timestamp = new Date();
     }
 
-    public Message() {}
+    public Chat() {}
 
     public String getSender() {
         return sender;

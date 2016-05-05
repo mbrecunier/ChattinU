@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ChattinU</string>
+    <string name="user_prompt">Pick chatty!</string>
+
+    <string-array name="all_users_array">
+        <item>Malaysia</item>
+        <item>Todd</item>
+        <item>Indonesia</item>
+        <item>France</item>
+        <item>Italy</item>
+        <item>Singapore</item>
+        <item>Zealand</item>
+        <item>India</item>
+    </string-array>
 </resources>
