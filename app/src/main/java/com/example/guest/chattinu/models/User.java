@@ -1,4 +1,4 @@
-package com.example.guest.chattinu.models.User;
+package com.example.guest.chattinu.models;
 
 /**
  * Created by Guest on 5/4/16.
